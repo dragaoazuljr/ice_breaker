@@ -1,8 +1,14 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 
 def get_profile_url(name: str) -> str:
-    driver = webdriver.Chrome()
+    options = Options()
+
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+
+    driver = webdriver.Chrome(options=options)
 
     driver.get("https://www.google.com")
 

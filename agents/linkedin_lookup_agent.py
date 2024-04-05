@@ -18,7 +18,9 @@ def lookup(name: str) -> str:
     
     template = """
     given the full name {name_of_person} I want you to get it me a link to their LinkedIn profile page.
-    Your answer should be a valid LinkedIn profile URL.
+    Your answer should be a valid LinkedIn profile URL. 
+    If the url contains a < or > remove them
+    If the url has a different domain than www.linkedin.com, replace it with www, like br.linkedin.com will be www.linkedin.com 
     """
 
     tools_for_agents = [

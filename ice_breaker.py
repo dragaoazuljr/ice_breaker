@@ -23,6 +23,8 @@ if __name__ == "__main__":
     given the information {information} about a person I want you to create:
     1. A short summary about the work experience of the person
     2. two interesting work related facts about them
+    3. A topic that you think they would be interested in discussing
+    4. 2 creative Ice Breakers to open a conversation with them
     """
 
     summary_prompt_template = PromptTemplate(input_variables=["information"], template=summary_template)

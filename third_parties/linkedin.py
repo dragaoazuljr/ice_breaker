@@ -1,7 +1,10 @@
 import os
-import requests
+import pickle
+import json
+import time
 
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from dotenv import load_dotenv
@@ -14,17 +17,31 @@ def scrape_linkedin_profile(linkedin_profile_url: str):
     """scrape information from LinkedIn profiles,
     Manually scape the information from the LinkedIn profile"""
  
-    driver = webdriver.Chrome()
+    proxy = os.getenv("PROXY")
 
-    email = os.getenv("LINKEDIN_EMAIL") or ''
-    password = os.getenv("LINKEDIN_PASS") or ''
+    options = Options()
+
+    options.add_argument('--headless')
+    options.add_argument('user-data-dir=linkedin')
+
+    driver = webdriver.Chrome(options=options)
+
+    email = os.getenv("EMAIL") or ''
+    password = os.getenv("PASS") or ''
 
     driver.get("https://www.linkedin.com/login")
 
-    driver.find_element(by="id", value="username").send_keys(email)
-    driver.find_element(by="id", value="password").send_keys(password)
+    time.sleep(1)
 
-    driver.find_element(by="css selector", value=".btn__primary--large.from__button--floating").click()
+    current_url = driver.current_url
+
+    if current_url.find("login") != -1:
+        driver.find_element(by="id", value="username").send_keys(email)
+        driver.find_element(by="id", value="password").send_keys(password)
+
+        driver.find_element(by="css selector", value=".btn__primary--large.from__button--floating").click()
+
+        time.sleep(20)
 
     driver.get(linkedin_profile_url)
 
@@ -35,6 +52,10 @@ def scrape_linkedin_profile(linkedin_profile_url: str):
         wait.until(lambda driver: driver.find_element(by="id", value="experience"))
     except:
         pass
+
+    cookies = driver.get_cookies()
+
+    pickle.dump(cookies, open("cookies-linkedin.pkl", "wb"))
 
     page = driver.page_source
 

@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#webdriver folders
+twitter/
+linkedin/
+
+#cookies
+cookies-linkedin.pkl
+cookies.json
