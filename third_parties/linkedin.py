@@ -88,11 +88,5 @@ def scrape_linkedin_profile(linkedin_profile_url: str):
     #     "experience": experience
     # }
 
-    return f"""
-    Name: {name}
-    Title: {title}
-    Location: {location}
-    About: {about}
-    Experience: {experience}
-    """
+    return f"""Name = {name}, Job Title = {title}, Location = {location}, About = {about}, Experience = {experience}"""
     

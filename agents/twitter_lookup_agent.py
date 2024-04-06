@@ -1,11 +1,12 @@
 import os
 
+from dotenv import load_dotenv
+
+from langchain import hub
+from langchain.agents import AgentExecutor, create_react_agent
 from langchain_community.chat_models.ollama import ChatOllama
-from langchain.agents import create_react_agent, AgentExecutor
 from langchain_core.prompts import PromptTemplate
 from langchain_core.tools import Tool
-from langchain import hub
-from dotenv import load_dotenv
 
 from tools.tools import get_first_google_search
 
@@ -15,21 +16,20 @@ def lookup(name: str) -> str:
 
     model = os.getenv("MODEL", "llama2:13b")
     llm = ChatOllama(temperature=0, model=model)
-    
+
     template = """
-    given the full name {name_of_person} I want you to get it me a link to their LinkedIn profile page.
-    Your answer should be a valid LinkedIn profile URL. 
+    given the full name {name_of_person} I want you to get it me a link to their Twitter profile page.
+    Your answer should be a valid Twitter profile URL.
     If the url contains a < or > remove them
-    If the url has a different domain than www.linkedin.com, replace it with www, like br.linkedin.com will be www.linkedin.com 
     """
 
-    func = lambda name: get_first_google_search(name, "LinkedIn")
+    func = lambda name: get_first_google_search(name, "Twitter")
 
     tools_for_agents = [
         Tool(
-            name="Crawl Google 4 LinkedIn profile pages",
+            name="Crawl Google 4 Twitter profile pages",
             func=func,
-            description="Useful for when you need to find a link of LinkedIn profile for a person",
+            description="Useful for when you need to find a link of Twitter profile for a person",
         )
     ]
 
@@ -52,3 +52,4 @@ def lookup(name: str) -> str:
         output = output.replace("<", "").replace(">", "")
 
     return output
+    

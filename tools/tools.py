@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 
-def get_profile_url(name: str) -> str:
+def get_first_google_search(name: str, search_completion: str) -> str:
     options = Options()
 
     options.add_argument('--headless')
@@ -14,7 +14,7 @@ def get_profile_url(name: str) -> str:
 
     search_box = driver.find_element(by="css selector", value="textarea[name='q']")
 
-    search_box.send_keys(f"{name} LinkedIn")
+    search_box.send_keys(f"\"{name}\" {search_completion}")
 
     search_box.submit()
 
