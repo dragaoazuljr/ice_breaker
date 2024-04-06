@@ -1,5 +1,6 @@
 import os
 
+from langchain.globals import set_verbose
 from langchain_community.chat_models.ollama import ChatOllama
 from langchain.agents import create_react_agent, AgentExecutor
 from langchain_core.prompts import PromptTemplate
@@ -12,6 +13,8 @@ from tools.tools import get_first_google_search
 
 def lookup(name: str) -> str:
     load_dotenv()
+
+    set_verbose(True)
 
     model = os.getenv("MODEL", "llama2:13b")
     llm = ChatOllama(temperature=0, model=model)
