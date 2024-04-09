@@ -135,3 +135,6 @@ linkedin/
 #cookies
 cookies-linkedin.pkl
 cookies.json
+
+#output
+person_intel.json

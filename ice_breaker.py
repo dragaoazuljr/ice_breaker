@@ -1,4 +1,5 @@
 import json
+import sys
 import os
 
 from dotenv import load_dotenv
@@ -18,7 +19,8 @@ from agents.twitter_lookup_agent import lookup as twitter_lookup_agent
 
 from output_parsers import person_intel_parser
 
-name = "Danillo Moraes"
+# get the name from command line arguments
+name = sys.argv[1]
 
 def ice_breaker(name): 
     load_dotenv()
@@ -28,20 +30,6 @@ def ice_breaker(name):
 
     twitter_profile_url = twitter_lookup_agent(name=name)
     twitter_data = scrape_twitter_profile(twitter_profile_url)
-
-    # summary_template = """
-    # given the LinkedIn information: {linkedin_information}
-    #  ---
-    # His last tweets: {twitter_information} 
-    #  ---
-    # About a person I want you to create:
-
-    # 1. A short summary about the work experience of the person
-    # 2. two interesting related facts about them
-    # 3. A topic that you think they would be interested in discussing
-    # 4. 2 creative Ice Breakers to open a conversation with them
-    # \n{format_instructions}
-    # """
 
     summary_template = """
 Use the following pieces of information about a person and answer the request.
@@ -115,4 +103,7 @@ Format the output in the following format:
 
 if __name__ == "__main__":
     result = ice_breaker(name)   
-    print(result)
+
+    #save the result to a json file
+    with open('person_intel.json', 'w') as f:
+        json.dump(result, f, indent=4)
